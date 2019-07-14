@@ -1,5 +1,5 @@
 
-.. image:: https://api.travis-ci.org/alainivars/ansible-role.svg?branch=master
+.. image:: https://api.travis-ci.org/alainivars/ansible-roles.svg?branch=master
     :target: http://travis-ci.org/alainivars/ansible-role
     :alt: Build status
 
