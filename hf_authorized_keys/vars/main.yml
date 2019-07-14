@@ -1,0 +1,6 @@
+---
+# vars file for hf_authorized_keys
+ssh_users:
+  - name: "{{ user }}"
+    key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
+    state: present
