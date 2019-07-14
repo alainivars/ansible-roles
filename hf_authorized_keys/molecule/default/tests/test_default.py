@@ -7,8 +7,8 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 
 def test_hosts_file(host):
-    f = host.file('/root/.ssh/authorized_keys')
-
+    f = host.file('/etc/hosts')
+    # todo: make a real test here
     assert f.exists
     assert f.user == 'root'
     assert f.group == 'root'

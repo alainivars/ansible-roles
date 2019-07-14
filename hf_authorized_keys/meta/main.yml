@@ -8,36 +8,15 @@ galaxy_info:
   license: license (BSD, MIT)
   min_ansible_version: 2.4
   platforms:
-    - name: EL
+    - name: Centos
       versions:
-        - all
-    - name: GenericUNIX
-      versions:
-        - all
-    - name: Fedora
-      versions:
-        - all
-    - name: opensuse
-      versions:
-        - all
-    - name: GenericBSD
-      versions:
-        - all
-    - name: FreeBSD
-      versions:
-        - all
+        - 7
     - name: Ubuntu
       versions:
-        - all
-    - name: SLES
-      versions:
-        - all
-    - name: GenericLinux
-      versions:
-        - all
+        - 18.04
     - name: Debian
       versions:
-        - all
+        - 9
   galaxy_tags:
     - system
     - development
