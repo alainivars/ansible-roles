@@ -1,0 +1,52 @@
+---
+
+- hosts: docker:!localhost
+  roles:
+    - hf_provision_docker
+
+# ADD YOUR OWN TASKS HERE
+
+- hosts : docker
+  tasks:
+    - name: Include os-specific variables. base-provision-docker
+      include_vars: "../../group_vars/all.yml"
+
+- hosts : docker
+  tasks:
+    - name: Print Module Variables ("base-provision-docker _the_vars, pip_package")
+      debug:
+        msg: "{{ _the_vars, pip_package }}"
+
+
+#- name: Install Docker, Python, pip and pip packages required by Ansible
+- hosts : docker
+  become: True
+  roles:
+    - role: geerlingguy.pip
+      vars:
+        pip_install_packages:
+        - name: jsondiff # needed by Ansible docker_stack module
+        - name: pyyaml   # needed by Ansible docker_stack module
+        - name: docker
+      debug:
+        msg: "{{ vars }}"
+
+    - role: geerlingguy.docker
+      vars:
+        docker_package_state: present
+        docker_install_compose: False
+
+  post_tasks:
+    - name: Ensure current user is added to the docker group
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: yes
+      register: user_status
+      when: "'test' not in group_names"
+
+#- name: Reset connection so the new docker group is taken into account
+- hosts : docker:!localhost
+  tasks:
+    - name: Reload current user groups
+      meta: reset_connection # reset connection so the new docker group is taken into account. Not available for localhost :(

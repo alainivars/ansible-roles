@@ -1,0 +1,6 @@
+---
+# tasks file for hf_provision_system
+  - name: Set timezone to Etc/UTC
+    become: True
+    timezone:
+      name: "{{ name | default('Etc/UTC') }}"

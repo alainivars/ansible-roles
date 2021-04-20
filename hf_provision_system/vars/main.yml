@@ -1,0 +1,3 @@
+---
+# group_vars file for hf_provision_system
+cache_valid_time: 3600 # One hour
