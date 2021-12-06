@@ -2,3 +2,5 @@ molecule==2.20.1
 docker==4.0.2
 pytest==4.6.4
 testinfra==3.0.5
+jinja2>=2.11.3 # not directly required, pinned by Snyk to avoid a vulnerability
+pyyaml>=5.4 # not directly required, pinned by Snyk to avoid a vulnerability
