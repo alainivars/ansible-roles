@@ -2,16 +2,16 @@
 ###
 # Base provision System playbook
 ##
-- hosts : docker
+- hosts : {{ target }}' #docker
   tasks:
     - name: Include os-specific variables. base_provision_system
       include_vars: "../../group_vars/all.yml"
 
-- import_playbook: base-provision-system-update.yml
+- import_playbook: bp-update.yml
   tags: [provision-system-update]
 
-#- import_playbook: base-provision-system-packages-python-pip.yml
-#  tags: [system-packages]
+- import_playbook: bp-packages-python-pip.yml
+  tags: [system-packages]
 
 #- hosts : docker
 #  tasks:

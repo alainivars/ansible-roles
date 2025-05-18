@@ -5,6 +5,7 @@
 
 hf_proxmox
 ==========
+Setup Proxmox server (work in progress).
 
 hf_proxmox:
     - Update repository cache

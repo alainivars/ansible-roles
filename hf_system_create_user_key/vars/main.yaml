@@ -1,0 +1,3 @@
+---
+# for hf_system_create_user_key
+new_user_name_linux: "{{ lookup('env', 'NEW_USER_NAME_LINUX') }}"

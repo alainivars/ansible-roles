@@ -1,6 +1,6 @@
 ---
 
-- hosts: docker:!localhost
+- hosts: '{{ target }}' #docker:!localhost
   roles:
     - hf_provision_docker
 
@@ -49,4 +49,4 @@
 - hosts : docker:!localhost
   tasks:
     - name: Reload current user groups
-      meta: reset_connection # reset connection so the new docker group is taken into account. Not available for localhost :(
+      meta: reset_connection # Reset connection so the new docker group is taken into account. Not available for localhost :(

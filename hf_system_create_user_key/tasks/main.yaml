@@ -1,0 +1,23 @@
+---
+# tasks file for hf_system_create_user_key
+
+- name: Get existing users
+  getent:
+    database: passwd
+
+- name: Create new user with OpenSSH keypair (4096 bits, RSA)
+  user:
+    name: "{{ new_user_name_linux }}"
+    generate_ssh_key: yes
+    ssh_key_bits: 4096
+  with_items:
+    - "{{ new_user_name_linux }}"
+  when: item not in getent_passwd.keys()
+
+# TODO: check/compare with hf_authorized_keys to possibly merge
+- name: Set authorized my key if not exists
+  ansible.posix.authorized_key:
+    user: "{{ new_user_name_linux }}"
+    state: present
+    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    exclusive: true

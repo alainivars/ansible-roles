@@ -1,0 +1,21 @@
+---
+dependencies: []
+
+galaxy_info:
+  role_name: nfs_server
+  author: Alain Ivars
+  description: NFS client installation for Linux.
+  company: HIGHFEATURE Ltd
+  license: license (BSD, MIT)
+  min_ansible_version: 2.10
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+  galaxy_tags:
+    - system
+    - nfs
+    - share
