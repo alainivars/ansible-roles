@@ -1,0 +1,9 @@
+---
+
+ - hosts: all
+   become: false
+   roles:
+     - hf_system_packages_python_pip
+
+
+# ADD YOUR OWN TASKS HERE

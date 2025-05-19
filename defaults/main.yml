@@ -1,0 +1,14 @@
+---
+
+# just a help to know where come from the vars
+_the_vars: "ansible roles defaults main.yml"
+_the_vars_ansible_roles_defaults_main_yml: 1
+
+# geerlingguy.pip role configuration
+pip_package: python3-pip
+
+# geerlingguy.docker role configuration
+docker_edition: ce
+
+# Repository to be used for the installation of the packages
+docker_repo: "{{ docker_repo_ce_stable }}"

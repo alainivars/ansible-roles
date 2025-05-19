@@ -1,0 +1,61 @@
+---
+
+- name: Update repository cache
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install proxmoxer
+  ansible.builtin.apt:
+    name:
+      - python3-proxmoxer
+    state: latest
+
+- name: Check if a token for a user
+  ansible.builtin.command:
+    argv:
+      - /usr/bin/pvesh
+      - get
+      - '/access/users/{{ new_user_name }}/token/{{ new_user_token_id }}'
+  ignore_errors: yes
+  register: proxmox_user_get
+
+- name: Display user Information
+  debug:
+    msg: Return {{ proxmox_user_get }}
+  when: proxmox_user_get["stderr"]
+
+- name: Create a token for a user
+  ansible.builtin.command:
+    argv:
+      - /usr/bin/pvesh
+      - create
+      - '/access/users/{{ new_user_name }}/token/{{ new_user_token_id }}'
+# TODO: manage these option if needed
+#      - comment={{ token_description| default("My test API Token") }},
+#      - privsep={{ privsep | default("true") }},
+#      - expire={{ expire | default("0") }}
+  register: proxmox_user_token_create
+  when: proxmox_user_get["stderr"]
+
+- name: Display user Information
+  debug:
+    var: proxmox_user_token_create
+  when: proxmox_user_get["stderr"] and proxmox_user_token_create["stderr"]
+
+## https://galaxy.ansible.com/ui/repo/published/community/general/content/module/proxmox_storage_info/
+#- name: List existing storages
+#  community.general.proxmox_storage_info:
+#    api_host: "{{ proxmox_host }}"
+#    api_user: root@pam
+#    api_password: "{{ pve_root_password | default(omit) }}"
+#    api_token_id: "{{ token_id | default(omit) }}"
+#    api_token_secret: "{{ token_secret | default(omit) }}"
+#  register: proxmox_storages
+##TASK [hf_proxmox : List existing storages] *********************************************************************************************
+##An exception occurred during task execution. To see the full traceback, use -vvv. The error was: AttributeError: 'Backend' object has no attribute 'auth'
+##fatal: [192.168.0.26]: FAILED! => {"changed": false, "msg": "'Backend' object has no attribute 'auth'"}
+#
+#- name: Display Storage and Disk Information
+#  debug:
+#    var: proxmox_storages.storage

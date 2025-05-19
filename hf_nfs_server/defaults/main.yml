@@ -1,0 +1,6 @@
+---
+# defaults file for hf_nfs_server
+nfs_exports: []
+
+nfs_rpcbind_state: started
+nfs_rpcbind_enabled: true

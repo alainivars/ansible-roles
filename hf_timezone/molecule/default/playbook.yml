@@ -1,0 +1,6 @@
+---
+- name: Converge
+  hosts: "192.168.60.10"
+  roles:
+    - role: hf_timezone
+      name: Etc/UTC
