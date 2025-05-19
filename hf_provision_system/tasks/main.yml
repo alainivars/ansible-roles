@@ -1,0 +1,42 @@
+---
+
+# tasks file for hf_provision_system
+
+- name: Check when apt was last updated
+  stat:
+    path: /var/cache/apt/pkgcache.bin
+    get_checksum: no
+  register: apt_package_cache_stat
+
+- name: Update apt repo and cache on all Debian/Ubuntu boxes
+  become: true
+  apt: update_cache=yes force_apt_get=yes cache_valid_time={{ cache_valid_time }}
+  when: not apt_package_cache_stat.stat.exists or
+        ansible_date_time.epoch|float - apt_package_cache_stat.stat.mtime > cache_valid_time
+
+- name: Upgrade all packages on server
+  become: true
+  apt: upgrade=yes force_apt_get=yes install_recommends=no
+  when: not apt_package_cache_stat.stat.exists or
+        ansible_date_time.epoch|float - apt_package_cache_stat.stat.mtime > cache_valid_time
+
+- name: Autoremove Un-used package
+  become: true
+  apt: autoremove=yes
+  when: not apt_package_cache_stat.stat.exists or
+        ansible_date_time.epoch|float - apt_package_cache_stat.stat.mtime > cache_valid_time
+
+- name: Check if reboot required
+  stat:
+    path: /var/run/reboot-required
+  register: reboot_required_file
+  when: not apt_package_cache_stat.stat.exists or
+        ansible_date_time.epoch|float - apt_package_cache_stat.stat.mtime > cache_valid_time
+
+- name: Reboot if required
+  become: true
+  reboot:
+    msg: "Reboot initiated by Ansible for kernel updates"
+  when: not apt_package_cache_stat.stat.exists or
+        (ansible_date_time.epoch|float - apt_package_cache_stat.stat.mtime > cache_valid_time and
+        reboot_required_file.stat.exists == true)

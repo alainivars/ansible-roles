@@ -1,0 +1,25 @@
+---
+dependencies: []
+
+galaxy_info:
+  author: Alain Ivars
+  description: "Provision system: Check when apt was last updated, Update apt repo and cache on all Debian/Ubuntu boxes, Upgrade all packages on servers, Autoremove Un-used package, Reboot if required"
+  company: HIGHFEATURE Ltd
+  license: license (BSD, MIT)
+  min_ansible_version: 2.4
+  platforms:
+    - name: Centos
+      versions:
+        - 7
+        - 8
+    - name: Ubuntu
+      versions:
+        - 18.04
+        - 20.04
+    - name: Debian
+      versions:
+        - 9
+        - 10
+  galaxy_tags:
+    - system
+    - development
