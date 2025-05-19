@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: "192.168.60.10"
+  roles:
+    - role: hf_
+      ssh_user: "alain"
+      ip_address: "192.168.60.10"

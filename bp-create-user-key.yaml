@@ -1,0 +1,6 @@
+---
+
+ - hosts: all
+   become: false
+   roles:
+     - hf_system_create_user_key
