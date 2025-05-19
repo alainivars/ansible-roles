@@ -1,0 +1,17 @@
+---
+# tasks file for hf_system_packages_python_pip
+
+- name: Install epel-release
+  package:
+    name: "epel-release"
+    state: present
+  when: ansible_os_family == 'RedHat' and ansible_distribution != 'Fedora'
+
+- name: Install python-pip.
+  package:
+    name: "{{ python_pip_packages }}"
+    state: present
+  when: (ansible_os_family == 'Debian'
+    and ansible_python_version is version_compare('2.6.0', '>=')
+    and ansible_python_version is version_compare('2.7.9', '<'))
+

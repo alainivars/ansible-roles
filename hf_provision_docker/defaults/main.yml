@@ -1,0 +1,11 @@
+---
+
+_the_vars: "ansible roles hf_provision_docker defaults"
+
+# defaults file for hf_system_packages
+
+# geerlingguy.pip role configuraTION
+pip_package: python3-pip
+
+# geerlingguy.docker role configuration
+docker_edition: ce

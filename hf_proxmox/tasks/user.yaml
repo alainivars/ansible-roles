@@ -1,0 +1,26 @@
+---
+
+- name: List Proxmox PAM user
+  ansible.builtin.command:
+    argv:
+      - /usr/sbin/pveum
+      - user
+      - list
+  register: proxmox_users
+#  tags: [provision-proxmox-user-list]
+
+- name: Add a new Proxmox PAM user
+  ansible.builtin.command:
+    argv:
+      - /usr/sbin/pveum
+      - user
+      - add
+      - "{{ new_user_name }}"
+      - -password
+      - "{{ new_user_password }}"
+      - -group
+      - 'pve-admin'
+      - -group
+      - 'pve-container'
+  when: new_user_name not in proxmox_groups["stdout"]
+#  tags: [provision-proxmox-add-pam-user]

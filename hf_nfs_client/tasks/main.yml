@@ -1,0 +1,89 @@
+---
+# tasks file for hf_nfs_client
+
+# Include variables and define needed variables.
+- name: Include OS-specific variables.
+  include_vars: "{{ ansible_os_family }}.yml"
+
+# Setup/install tasks.
+- include_tasks: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: nfs_imports -> loop
+  ansible.builtin.debug:
+    msg: "{{ item }}"
+  loop: "{{ nfsmounts }}"
+
+- name: Ensure autofs service is running.
+  service: "name={{ autofs_daemon }} state=started enabled=yes"
+  when: nfsmounts|length
+
+- name: Ensure target directories exist
+  file:  # noqa 208
+    path: "{{ item.path }}"
+    state: directory
+    mode: '0644'
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+  with_items: "{{ nfsmounts }}"
+
+# TODO: implement the check result of showmount --exports servers
+#- name: check result of showmount --exports servers
+#  file:  # noqa 208
+#    path: "{{ item.strip().split()[1] }}"
+#    state: directory
+#    mode: '0644'
+#    owner: "{{ item.strip().split()[2] }}"
+#    group: "{{ item.strip().split()[3] }}"
+#  with_items: "{{ nfs_imports }}"
+
+- name: Add in /etc/auto.master
+  blockinfile:
+    path: /etc/auto.master
+    state: present
+    block: |
+      {{ item.path }} /etc/auto.nfs --ghost --timeout=30
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.path }}"
+  with_items: "{{ nfsmounts }}"
+
+- name: Create file /etc/auto.nfs if not exist
+  ansible.builtin.file:
+    path: /etc/auto.nfs
+    owner: root
+    group: root
+    mode: '0644'
+    state: touch
+
+- name: Add in /etc/auto.nfs
+  blockinfile:
+    path: /etc/auto.nfs
+    state: present
+    block: |
+      {{ item.folder }} -fstype=nfs4,uid={{ item.owner }},gid={{ item.group }},rw {{ item.src }}
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.folder }}"
+  with_items: "{{ nfsmounts }}"
+
+- name: "Restarting the {{ autofs_daemon }} service"
+  service:
+    name: "{{ autofs_daemon }}"
+    state: restarted
+
+#- name: Ensure target directories exist
+#  file:  # noqa 208
+#    path: "{{ item.path }}"
+#    state: directory
+#    mode: '0644'
+#    owner: "{{ item.owner }}"
+#    group: "{{ item.group }}"
+#  with_items: "{{ nfsmounts }}"
+
+#- name: mount the nfsshare in client side
+#  mount:
+#    fstype: nfs
+#    opts: defaults
+#    dump: 0
+#    passno: 0
+#    state: mounted
+#    src: "{{ item.src }}"
+#    path: "{{ item.path }}"
+#  with_items: "{{ nfsmounts }}"

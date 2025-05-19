@@ -1,0 +1,30 @@
+---
+
+- name: list groups
+  ansible.builtin.command:
+    argv:
+      - /usr/sbin/pveum
+      - group
+      - list
+  register: proxmox_groups
+#  tags: [provision-proxmox-group-list]
+
+- name: Add a new Proxmox group 'pve-admin'
+  ansible.builtin.command:
+    argv:
+      - /usr/sbin/pveum
+      - group
+      - add
+      - 'pve-admin'
+  when: "'pve-admin' not in proxmox_groups['stdout']"
+#  tags: [provision-proxmox-group-add]
+
+- name: Add a new Proxmox group 'pve-admin'
+  ansible.builtin.command:
+    argv:
+      - /usr/sbin/pveum
+      - group
+      - add
+      - 'pve-container'
+  when: "'pve-container' not in proxmox_groups['stdout']"
+#  tags: [provision-proxmox-group-add]
