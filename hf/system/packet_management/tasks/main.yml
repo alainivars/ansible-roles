@@ -1,6 +1,6 @@
 ---
 
-# tasks file for hf_provision_system
+# tasks file for hf.system.packet_management
 
 - name: Check when apt was last updated
   stat:

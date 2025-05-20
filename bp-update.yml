@@ -2,6 +2,6 @@
 
  - hosts: all
    roles:
-     - hf_provision_system
+     - { role: roles/hf/system/packet_management }
 
 # ADD YOUR OWN TASKS HERE
