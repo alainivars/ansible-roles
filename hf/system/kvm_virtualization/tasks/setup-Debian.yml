@@ -1,0 +1,16 @@
+---
+- name: Ensure virtualization utilities are installed.
+  apt:
+    name:
+      - qemu-system-x86
+      - libvirt-daemon-system
+      - virtinst
+      - virt-manager
+      - virt-viewer
+      - ovmf
+      - swtpm
+      - qemu-utils
+      - guestfs-tools
+      - libosinfo-bin
+      - tuned
+    state: present

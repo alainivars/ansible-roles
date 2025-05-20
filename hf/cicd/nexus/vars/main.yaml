@@ -1,0 +1,13 @@
+NSERV: {{Nexus_server_url}}
+NEXUS_USER: {{Nexus_user}}
+NEXUS_PASSWORD: {{Nexus_password}}
+NPORT: {{Nexus_port}}
+NEXUS_URL_TAGS: nexus/service/rest/v1/tags
+NEXUS_URL_PROMOTE: nexus/service/rest/v1/staging/move
+NUASS: nexus/service/rest/v1/tags/associate
+ENV_LIST: "uat,UAT,prod,PROD"
+NTAG: {{Nexus_tag}}
+SREPO: {{NEXUS_SERVICE_REPOSITORY}}
+DREPO: {{NEXUS_DESTINATION_REPOSITORY}}
+SNAME: {{SERVICE_NAME}}
+SVERS: {{SERVICE_VERSION}}

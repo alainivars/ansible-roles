@@ -1,6 +1,0 @@
----
-# defaults file for hf_system_packages
-#ip_address: "192.168.60.10"
-#node_name: "node1"
-#ssh_user: "vagrant"
-#ssh_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"

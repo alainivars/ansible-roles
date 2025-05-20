@@ -1,0 +1,65 @@
+# Nexus Search tag, Create tag, Associate tag, Promote module
+
+- name: Nexus search tag
+  ansible.builtin.uri:
+    url: "https://{{NSERV}}:{{NPORT}}/{{NEXUS_URL_TAGS}}/{{NTAG}}"
+    user: "{{NEXUS_USER}}"
+    password: "{{NEXUS_PASSWORD}}"
+    method: GET
+    force_basic_auth: true
+    status_code:
+      - 200
+      - 404
+  register: result_search_tag
+
+# curl -k -u user:password -X POST --header 'Content-Type: application/json' \
+#  https://nexus.company.com:8081/nexus/service/rest/v1/tags \
+#  -d '{"name": "module_name_1", "attributes": { "project name": "module_name" }}'
+- name: Nexus create tag
+  ansible.builtin.uri:
+    url: "https://{{NSERV}}:{{NPORT}}/{{NEXUS_URL_TAGS}}"
+    user: "{{NEXUS_USER}}"
+    password: "{{NEXUS_PASSWORD}}"
+    method: POST
+    force_basic_auth: true
+    body_format: json
+    headers:
+      Content-Type: application/json
+    body:
+      "name": "{{tag}}"
+      "attributes":
+        "project name": "{{name}}"
+  register: result_create_tag
+  when:
+    - ENV in ENV_LIST
+    - result_search_tag.status == 404
+
+# curl -k -u user -X POST 'https://nexus.company.com:8081/nexus/service/rest/v1/tags/associate/
+# module_name_1?repository=docker-dev&name=module_name&version=v1.0.0'
+- name: Nexus associate tag
+  ansible.builtin.uri:
+    url: "https://{{NSERV}}:{{NPORT}}/{{NUASS}}/{{NTAG}}?repository={{SREPO}}&name={{SNAME}}&version={{SVERS}}"
+    user: "{{NEXUS_USER}}"
+    password: "{{NEXUS_PASSWORD}}"
+    method: POST
+    force_basic_auth: true
+    timeout: 60
+  register: result_associate_tag
+  when:
+    - ENV in ENV_LIST
+    - result_search_tag.status == 404
+
+- name: Nexus promote a module
+  ansible.builtin.uri:
+    url: "https://{{NSERV}}:{{NPORT}}/{{NEXUS_URL_PROMOTE}}/{{DREPO}}?tag={{NTAG}}"
+    user: "{{NEXUS_USER}}"
+    password: "{{NEXUS_PASSWORD}}"
+    method: POST
+    force_basic_auth: true
+    timeout: 60
+    status_code: 200
+  when:
+    - ENV in ENV_LIST
+    - result_search_tag.status == 404
+    - SREPO is defined and DREPO is defined and SREPO != "" and DREPO != "" and SREPO != DREPO
+    - NEXUS_TAG is defined and NEXUS_TAG != ""

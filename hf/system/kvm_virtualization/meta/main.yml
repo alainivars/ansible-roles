@@ -1,0 +1,20 @@
+---
+dependencies: []
+
+galaxy_info:
+  role_name: hf_kvm_virtualization
+  author: Alain Ivars
+  description: Kvm virtualization installation for Linux.
+  company: HIGHFEATURE Ltd
+  license: license (BSD, MIT)
+  min_ansible_version: 2.10
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+  galaxy_tags:
+    - system
+    - kvm

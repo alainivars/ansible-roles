@@ -1,0 +1,53 @@
+---
+
+- name: "Ansible list all know variables and facts"
+  debug:
+    var: hostvars[inventory_hostname]
+
+- name: Check /etc/nginx/nginx.conf exist
+  stat:
+    path: /etc/nginx/nginx.conf
+  register: target_nginx_conf_exist
+
+- debug: msg='target_nginx_conf_exist={{target_nginx_conf_exist.stat.exists}}'
+
+- name: Add setup for UPSTREAM 4 servers in /etc/nginx/nginx.conf
+  ansible.builtin.blockinfile:
+    path: /etc/nginx/nginx.conf
+    backup: true
+    insertafter: "# AUTOMATION TAG UPSTREAM --- DO NO TOUCH, MOVE, DELETE"
+    marker_begin: "# AUTOMATION TAG UPSTREAM Begin"
+    marker_end: "# AUTOMATION TAG UPSTREAM End"
+    block: |
+      upstream {{ _PROJECT }}Url {
+        server {{ SERVER1 }}:{{ PORT }};
+        server {{ SERVER2 }}:{{ PORT }};
+        server {{ SERVER3 }}:{{ PORT }};
+        server {{ SERVER4 }}:{{ PORT }};
+      }
+    state: "{{STATE}}"
+  when:
+    - SERVER1 is defined and SERVER1 != ""
+    - SERVER2 is defined and SERVER2 != ""
+    - SERVER3 is defined and SERVER3 != ""
+    - SERVER4 is defined and SERVER4 != ""
+
+- name: Add setup for LOCATION in /etc/nginx/nginx.conf
+  ansible.builtin.blockinfile:
+    path: /etc/nginx/nginx.conf
+    backup: true
+    insertafter: "# AUTOMATION TAG LOCATION --- DO NO TOUCH, MOVE, DELETE"
+    marker_begin: "# AUTOMATION TAG LOCATION Begin"
+    marker_end: "# AUTOMATION TAG LOCATION End"
+    block: |
+      location /{{ _PROJECT }} {
+        proxy_pass http://{{ _PROJECT }}Url/;
+        client_max_body_size 0;
+        client_body_buffer_size 4000m;
+        proxy_read_timeout 3600;
+        proxy_set_handler X-Forwarded-Prefix /hf;
+        proxy_set_handler X-Forwarded-For $proxy_add_x_forwarded_for;        
+      }
+    state: "{{STATE}}"
+  when: (SERVER2 is undefined) or (SERVER2 is defined and SERVER2 == "")
+

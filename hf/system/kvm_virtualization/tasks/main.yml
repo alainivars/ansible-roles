@@ -1,0 +1,68 @@
+---
+# tasks file for hf_kvm_virtualization
+
+# Include variables and define needed variables.
+- name: Include OS-specific variables.
+  include_vars: "{{ ansible_os_family }}.yml"
+
+# Setup/install tasks.
+- include_tasks: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Download VirtIO Drivers for Windows Guests
+  ansible.builtin.get_url:
+    url: https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso
+    dest: "{{ iso_folder }}"
+
+- name: Make sure a service unit is running
+  ansible.builtin.systemd_service:
+    state: started
+    name: libvirtd
+  when: ansible_os_family == 'Debian'
+
+#- name: Reboot host and wait for it to restart
+#  reboot:
+#    msg: "Reboot initiated by Ansible"
+#    connect_timeout: 5
+#    reboot_timeout: 600
+#    pre_reboot_delay: 0
+#    post_reboot_delay: 30
+#    test_command: whoami
+
+- name: check if Intel processor
+  command: grep -q Intel /proc/cpuinfo
+  ignore_errors: true
+  register: is_intel
+
+- name: check if AMD processor
+  command: grep -q AMD /proc/cpuinfo
+  ignore_errors: true
+  register: is_amd
+
+- name: get virt-host-validate qemu
+  command: >
+    virt-host-validate qemu
+  register: virt-host-validate
+  become: true
+
+- name: Check if IOMMU appears to be disabled in kernel.
+  set_fact:
+    myvalue: "{{ 'intel_iommu=on' in results.stdout }}"
+  when: is_intel
+
+- name: Enable IOMMU, Add intel_iommu=on to kernel cmdline arguments
+  ansible.builtin.lineinfile:
+    path: /etc/default/grub
+    regexp: '^GRUB_CMDLINE_LINUX_DEFAULT="((?:(?!intel_iommu=on).)*?)"$'
+    line: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 intel_iommu=on"'
+    backup: true
+    backrefs: true
+  notify: Update Grub2 config file ubuntu
+  when: ansible_os_family == 'Debian' and ansible_distribution != 'Pop!_OS'
+
+- name: Enable IOMMU, Add intel_iommu=on to kernel cmdline arguments
+  command: kernelstub -a "intel_iommu=on iommu=pt"
+  become: true
+  when: ansible_os_family == 'Debian' and ansible_distribution == 'Pop!_OS'
+
+# TODO: make the same for AMD

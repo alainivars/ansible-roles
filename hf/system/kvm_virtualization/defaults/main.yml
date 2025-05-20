@@ -1,0 +1,7 @@
+---
+# defaults file for hf_kvm_virtualization
+#nfs_exports: []
+#
+#nfs_rpcbind_state: started
+#nfs_rpcbind_enabled: true
+iso_folder: /usr/share/virtio-win
