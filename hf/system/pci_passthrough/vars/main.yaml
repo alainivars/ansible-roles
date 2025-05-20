@@ -1,0 +1,4 @@
+---
+# group_vars file for hf_pci_passthrough
+# BOOT_TYPE must contain LEGACY or EFI
+boot_type: '{{ lookup("env", "BOOT_TYPE") }}'

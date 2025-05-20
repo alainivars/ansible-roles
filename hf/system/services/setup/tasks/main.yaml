@@ -1,0 +1,14 @@
+# Setup the service
+
+- name: Setup Service {{SERVICE_NAME}} SystemD Unit
+  template:
+    src: "{{PROJECT}}.systemd.service"
+    dest: "{{SERVICE_PATH}}/{{SERVICE_NAME}}.service"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  register: sysd_state
+  remote_user: "{{PRIVATE_USER}}"
+  become_method: "{{PRIVATE_METHOD}}"
+  become: yes
+

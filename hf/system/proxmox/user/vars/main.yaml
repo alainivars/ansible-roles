@@ -1,0 +1,4 @@
+---
+# group_vars file for hf_proxmox
+new_user_name: "{{ lookup('env', 'NEW_USER_NAME') }}"
+new_user_password: '{{ lookup("env", "NEW_USER_PASSWORD") }}'

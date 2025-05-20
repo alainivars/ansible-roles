@@ -1,0 +1,89 @@
+---
+
+- name: Check compatibility of the system
+  ansible.builtin.shell: /usr/bin/cat /proc/cpuinfo | grep -E "vmx|svm"
+  register: compatibility
+
+- name: Check CPU Intel
+  ansible.builtin.shell: /usr/bin/cat /proc/cpuinfo | grep Intel
+  ignore_errors: true
+  register: cpu_intel
+
+- name: Check CPU Amd
+  ansible.builtin.shell: /usr/bin/cat /proc/cpuinfo | grep AMD
+  ignore_errors: true
+  register: cpu_amd
+
+- name: Display user Information
+  debug:
+    msg: Return {{ compatibility["stdout"] }}
+  when: compatibility["stdout"]
+
+# https://stackoverflow.com/questions/55844981/ansible-insert-word-in-grub-cmdline#answer-73507168
+- name: Enable IOMMU for Intel CPU
+  ansible.builtin.lineinfile:
+    path: /etc/default/grub
+    regexp: '^GRUB_CMDLINE_LINUX_DEFAULT="((?:(?!intel_iommu=on).)*?)"$'
+    line: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 intel_iommu=on"'
+    backup: true
+    backrefs: true
+#  notify: update-grub
+  when: compatibility["stdout"] and cpu_intel["stdout"]
+
+- name: Enable IOMMU for Amd CPU
+  ansible.builtin.lineinfile:
+    path: /etc/default/grub
+    regexp: '^GRUB_CMDLINE_LINUX_DEFAULT="((?:(?!amd_iommu=on).)*?)"$'
+    line: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 amd_iommu=on"'
+    backup: true
+    backrefs: true
+#  notify: update-grub
+  when: compatibility["stdout"] and cpu_amd["stdout"]
+
+- name: Ensure VFIO modules are loaded at boot
+  lineinfile:
+    path: /etc/modules
+    line: '{{ item }}'
+  register: vfio_result
+  with_items:
+    - vfio
+    - vfio_iommu_type1
+    - vfio_pci
+    - vfio_virqfd
+
+- name: Ensure graphics drivers are blacklisted
+  lineinfile:
+    path: /etc/modprobe.d/blacklist.conf
+    create: true
+    line: 'blacklist {{ item }}'
+  register: drivers_result
+  with_items:
+    - radeon
+    - nouveau
+    - nvidia
+
+# https://gist.github.com/KasperSkytte/6a2d4e8c91b7117314bceec84c30016b
+#- name: Ensure unsafe interrupts are allowed
+#  lineinfile:
+#    path: /etc/modprobe.d/iommu_unsafe_interrupts.conf
+#    create: true
+#    line: 'options vfio_iommu_type1 allow_unsafe_interrupts=1'
+##  register: unsafe_interrupts_result
+
+# https://gist.github.com/KasperSkytte/6a2d4e8c91b7117314bceec84c30016b
+#- name: Ensure unsafe interrupts are allowed
+#  lineinfile:
+#    path: "/etc/modprobe.d/kvm.conf"
+#    create: true
+#    line: 'options kvm ignore_msrs=1'
+#  register: unsafe_interrupts_result
+
+- name: Update grub configuration (need reboot if changes)
+  shell: update-grub
+  register: pci_grub_result
+  when: iommu_result | changed or
+        vfio_result | changed or
+        drivers_result | changed or
+        unsafe_interrupts_result | changed
+  failed_when: pci_grub_result.rc != 0
+  changed_when: pci_grub_result.rc == 0

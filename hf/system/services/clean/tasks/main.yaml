@@ -1,0 +1,27 @@
+# Check, Stop, Delete the service
+
+- name: Check Service {{SERVICE_NAME}} SystemD Unit
+  stat:
+    path: "{{SERVICE_PATH}}/{{SERVICE_NAME}}.service"
+  register: service_present
+  tags: clean
+
+- name: Stop Service {{SERVICE_NAME}} SystemD Unit
+  ansible.builtin.systemd:
+    name: "{{SERVICE_NAME}}"
+    state: stopped
+  remote_user: "{{PRIVATE_USER}}"
+  become_method: "{{PRIVATE_METHOD}}"
+  become: yes
+  when:
+    - service_present.stat.exist == true
+  tags: clean
+
+- name: Delete Service {{SERVICE_NAME}} SystemD Unit
+  shell: "rm {{SERVICE_PATH}}/{{SERVICE_NAME}}.service"
+  remote_user: "{{PRIVATE_USER}}"
+  become_method: "{{PRIVATE_METHOD}}"
+  become: yes
+  when:
+    - service_present.stat.exist == true
+  tags: clean

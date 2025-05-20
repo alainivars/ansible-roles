@@ -1,0 +1,4 @@
+SERVICE_PATH: /etc/systemd/system/
+SERVICE_NAME: my_service
+PRIVATE_USER: my_admin_user
+PRIVATE_METHOD: dzdo

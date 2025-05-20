@@ -1,0 +1,17 @@
+# Reload, Start the service
+
+- name: Reload Service {{SERVICE_NAME}} SystemD Unit
+  ansible.builtin.systemd:
+    daemon_reload: yes
+  remote_user: "{{PRIVATE_USER}}"
+  become_method: "{{PRIVATE_METHOD}}"
+  become: yes
+
+- name: Start Service {{SERVICE_NAME}} SystemD Unit
+  ansible.builtin.systemd:
+    name: "{{SERVICE_NAME}}"
+    state: restarted
+    enabled: yes
+  remote_user: "{{PRIVATE_USER}}"
+  become_method: "{{PRIVATE_METHOD}}"
+  become: yes
