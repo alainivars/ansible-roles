@@ -2,6 +2,4 @@
 
  - hosts: all
    roles:
-     - role: hf_timezone
-       vars:
-         name: "Etc/UTC"
+     - { role: roles/hf/system/timezone, vars: {name: "Etc/UTC"} }
