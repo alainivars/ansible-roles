@@ -33,7 +33,7 @@ Including an example of how to use your role (for instance, with variables passe
 - hosts: "all"
   become: false
   roles:
-    - { role: roles/hf/system/base_local/community }
+    - roles/hf/system/base_local
 
 
 

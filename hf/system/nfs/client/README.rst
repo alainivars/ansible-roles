@@ -33,17 +33,17 @@ Create file playbook.yml with the list of export on the target servers
 - hosts: clients
   become: true
   roles:
-    - role: hf_nfs_client
-      vars:
-        nfsmounts:
-          - src: 192.168.0.26:/mnt/b026_02/nfs_backup
-            path: /mnt/nfsc_backup
-            owner: a
-            group: a
-          - src: 192.168.0.26:/mnt/b026_02/nfs_document
-            path: /mnt/nfsc_document
-            owner: a
-            group: a
+    - roles/hf/system/nfs/client
+  vars:
+    nfsmounts:
+      - src: 192.168.0.26:/mnt/b026_02/nfs_backup
+        path: /mnt/nfsc_backup
+        owner: a
+        group: a
+      - src: 192.168.0.26:/mnt/b026_02/nfs_document
+        path: /mnt/nfsc_document
+        owner: a
+        group: a
 
 
 Then run the command

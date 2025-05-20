@@ -4,6 +4,6 @@
   hosts: all
   become: true
   roles:
-    - { role: roles/hf/system/proxmox/group }
-    - { role: roles/hf/system/proxmox/user }
-    - { role: roles/hf/system/proxmox/token }
+    - roles/hf/system/proxmox/group
+    - roles/hf/system/proxmox/user
+    - roles/hf/system/proxmox/token

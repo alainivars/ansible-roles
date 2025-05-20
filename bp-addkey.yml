@@ -1,6 +1,7 @@
 ---
 
- - hosts: all
-   become: false
-   roles:
-     - { role: roles/hf/system/authorized_keys }
+- name: Proxmox add_key
+  hosts: all
+  become: false
+  roles:
+    - roles/hf/system/user_key/add

@@ -47,7 +47,7 @@ Including an example of how to use your role (for instance, with variables passe
   hosts: all
   become: true
    roles:
-     - { role: roles/hf/system/pci_passthrough }
+     - roles/hf/system/pci_passthrough
 
 License
 -------

@@ -33,49 +33,49 @@ Create file playbook_hf_nfs_server.yml with the list of export on the target ser
 - hosts: servers
   become: true
   roles:
-    - role: hf_nfs_server
-      vars:
-        nfs_exports:
-          - src: /mnt/b026_02/nfs_backup
-            path: /mnt/nfsc
-            folder: backup
-            share: [192.168.0.0/24, 192.168.121.0/24]
-          - src: /mnt/b026_02/nfs_document
-            path: /mnt/nfsc
-            folder: document
-            share: [192.168.0.0/24, 192.168.121.0/24]
-          - src: /mnt/b026_02/nfs_photos
-            path: /mnt/nfsc
-            folder: photos
-            share: [192.168.0.0/24, 192.168.121.0/24]
-          - src: /mnt/b026_02/nfs_videos
-            path: /mnt/nfsc
-            folder: videos
-            share: [192.168.0.0/24, 192.168.121.0/24]
-          - src: /mnt/b026_02/nfs_musics
-            path: /mnt/nfsc
-            folder: musics
-            share: [192.168.0.0/24, 192.168.121.0/24]
-          - src: /mnt/b026_02/nfs_highfeature
-            path: /mnt/nfsc
-            folder: highfeature
-            share: [192.168.0.0/24, 192.168.121.0/24]
-          - src: /mnt/b026_02/nfs_hf_kubernetes
-            path: /mnt/nfsc
-            folder: hf_kubernetes
-            share: [192.168.0.0/24, 192.168.121.0/24]
-          - src: /mnt/b026_02/nfs_hf_docker
-            path: /mnt/nfsc
-            folder: hf_docker
-            share: [192.168.0.0/24, 192.168.121.0/24]
-          - src: /mnt/b026_02/nfs_hf_vms
-            path: /mnt/nfsc
-            folder: hf_vms
-            share: [192.168.0.0/24, 192.168.121.0/24]
-          - src: /mnt/b026_02/nfs_hf_repositories
-            path: /mnt/nfsc
-            folder: hf_repositories
-            share: [192.168.0.0/24, 192.168.121.0/24]
+    - roles/hf/system/nfs/server
+  vars:
+    nfs_exports:
+      - src: /mnt/b026_02/nfs_backup
+        path: /mnt/nfsc
+        folder: backup
+        share: [192.168.0.0/24, 192.168.121.0/24]
+      - src: /mnt/b026_02/nfs_document
+        path: /mnt/nfsc
+        folder: document
+        share: [192.168.0.0/24, 192.168.121.0/24]
+      - src: /mnt/b026_02/nfs_photos
+        path: /mnt/nfsc
+        folder: photos
+        share: [192.168.0.0/24, 192.168.121.0/24]
+      - src: /mnt/b026_02/nfs_videos
+        path: /mnt/nfsc
+        folder: videos
+        share: [192.168.0.0/24, 192.168.121.0/24]
+      - src: /mnt/b026_02/nfs_musics
+        path: /mnt/nfsc
+        folder: musics
+        share: [192.168.0.0/24, 192.168.121.0/24]
+      - src: /mnt/b026_02/nfs_highfeature
+        path: /mnt/nfsc
+        folder: highfeature
+        share: [192.168.0.0/24, 192.168.121.0/24]
+      - src: /mnt/b026_02/nfs_hf_kubernetes
+        path: /mnt/nfsc
+        folder: hf_kubernetes
+        share: [192.168.0.0/24, 192.168.121.0/24]
+      - src: /mnt/b026_02/nfs_hf_docker
+        path: /mnt/nfsc
+        folder: hf_docker
+        share: [192.168.0.0/24, 192.168.121.0/24]
+      - src: /mnt/b026_02/nfs_hf_vms
+        path: /mnt/nfsc
+        folder: hf_vms
+        share: [192.168.0.0/24, 192.168.121.0/24]
+      - src: /mnt/b026_02/nfs_hf_repositories
+        path: /mnt/nfsc
+        folder: hf_repositories
+        share: [192.168.0.0/24, 192.168.121.0/24]
 
 Then run the command
 ❯ ansible-playbook -i ./inventory playbook_hf_nfs_server.yml --ask-become-pass

@@ -1,5 +1,0 @@
----
-
- - hosts: all
-   roles:
-     - { role: roles/hf/system/timezone, vars: {name: "Etc/UTC"} }

@@ -5,4 +5,4 @@
   gather_facts: false
 #  become: true
   roles:
-    - { role: roles/hf/system/pci_passthrough }
+    - roles/hf/system/pci_passthrough

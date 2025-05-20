@@ -1,0 +1,8 @@
+---
+
+- name: Proxmox timezone
+  hosts: all
+  vars:
+    name: "Etc/UTC" # 'America/Toronto'
+  roles:
+    - roles/hf/system/timezone

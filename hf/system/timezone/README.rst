@@ -31,8 +31,10 @@ Including an example of how to use your role (for instance, with variables passe
 ---
 - hosts: "all"
   become: false
+  vars:
+    name: "Etc/UTC" # 'America/Toronto'
   roles:
-    - { role: roles/hf/system/timezone, name: Etc/UTC }
+    - roles/hf/system/timezone
 
 
 License

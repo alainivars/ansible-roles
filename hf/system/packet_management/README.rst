@@ -40,7 +40,7 @@ Including an example of how to use your role:
   hosts: all
   become: true
   roles:
-     - { role: roles/hf/system/packet_management }
+     - roles/hf/system/packet_management
 
 License
 -------

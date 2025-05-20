@@ -3,9 +3,20 @@
 - name: Disable Proxmox subscription popup
   ansible.builtin.replace:
     path: /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
-    regexp: '^(.*)Ext\\.Msg\\.show\$$\\{(.*)$\\n^(.*)No valid subscription(.*)$'
-    replace: '\\1void({\\2\\n\\3No valid subscription\\4'
+    regexp: '^(.*)Ext\.Msg\.show\(\{(.*)$\n^(.*)No valid subscription(.*)$'
+    replace: '\1void({\2\n\3No valid subscription\4'
   tags: [provision-proxmox-community]
+
+#- name: Replace JavaScript function in file
+#  ansible.builtin.replace:
+#    path: /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
+#    regexp: 'function oldFunction$$.+$$\s*\{[\s\S]*?\}'
+#    replace: |
+#      function newFunction(param1, param2) {
+#        // New function content
+#        console.log("New function called with parameters:", param1, param2);
+#      }
+#    backup: yes
 
 - name: Modify sources.list to use pve-no-subscription repository (Proxmox 8.*)
   ansible.builtin.lineinfile:

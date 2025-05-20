@@ -35,13 +35,13 @@ Create file playbook_hf_nfs_server.yml with the list of export on the target ser
 - hosts: servers
   become: true
   roles:
-    - role: hf_kvm_virtualization
-      vars:
-        nfs_exports:
-          - src: /mnt/b026_02/nfs_backup
-            path: /mnt/nfsc
-            folder: backup
-            share: [192.168.0.0/24, 192.168.121.0/24]
+    - roles/hf/system/kvm_virtualization
+  vars:
+    nfs_exports:
+      - src: /mnt/b026_02/nfs_backup
+        path: /mnt/nfsc
+        folder: backup
+        share: [192.168.0.0/24, 192.168.121.0/24]
 
 Then run the command
 ❯ ansible-playbook -i ./inventory playbook_hf_nfs_server.yml --ask-become-pass
