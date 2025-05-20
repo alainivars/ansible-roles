@@ -3,14 +3,7 @@
 - name: Proxmox add_group_user
   hosts: all
   become: true
-  tasks:
-    - name: Run tasks/group.yaml instead of 'main'
-      ansible.builtin.include_role:
-        name: hf_proxmox
-        tasks_from: group
-    - name: Run tasks/user.yaml instead of 'main'
-      ansible.builtin.include_role:
-        name: hf_proxmox
-        tasks_from: user
   roles:
-    - hf_proxmox
+    - { role: roles/hf/system/proxmox/group }
+    - { role: roles/hf/system/proxmox/user }
+    - { role: roles/hf/system/proxmox/token }

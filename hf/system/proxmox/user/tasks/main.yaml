@@ -9,7 +9,7 @@
   register: proxmox_users
 #  tags: [provision-proxmox-user-list]
 
-- name: Add a new Proxmox PAM user
+- name: Create a new Proxmox PAM user with group 'pve-admin' and 'pve-container'
   ansible.builtin.command:
     argv:
       - /usr/sbin/pveum

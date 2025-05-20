@@ -3,8 +3,5 @@
 - name: Proxmox community
   hosts: all
   become: true
-  tasks:
-    - name: Run tasks/community.yaml instead of 'main'
-      ansible.builtin.include_role:
-        name: hf_proxmox
-        tasks_from: community
+  roles:
+    - { role: roles/hf/proxmox/community }

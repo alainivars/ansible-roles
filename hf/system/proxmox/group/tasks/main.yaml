@@ -19,7 +19,7 @@
   when: "'pve-admin' not in proxmox_groups['stdout']"
 #  tags: [provision-proxmox-group-add]
 
-- name: Add a new Proxmox group 'pve-admin'
+- name: Add a new Proxmox group 'pve-container'
   ansible.builtin.command:
     argv:
       - /usr/sbin/pveum
