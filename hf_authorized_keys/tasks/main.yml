@@ -1,8 +1,0 @@
----
-# tasks file for hf_authorized_keys
-- name: Set authorized key for user 'user' copying it from current user
-  authorized_key:
-    user: "{{ item.user }}"
-    key: "{{ item.key }}"
-    state: "{{ item.state }}"
-  loop: "{{ ssh_users|flatten(levels=1) }}"

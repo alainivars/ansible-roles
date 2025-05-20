@@ -3,4 +3,4 @@
  - hosts: all
    become: false
    roles:
-     - hf_system_create_user_key
+     - { role: roles/hf/system/user_key/create }

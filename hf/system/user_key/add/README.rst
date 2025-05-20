@@ -3,12 +3,10 @@
     :target: http://travis-ci.org/alainivars/ansible-role
     :alt: Build status
 
-hf_system_create_user_key
+hf.system.user_key.create
 =========================
 
-Get existing users
-Create new user with no password with OpenSSH keypair (4096 bits, RSA)
-Set authorized key for user 'user' copying it from current user.
+Add my key if not exists in authorized_key
 
 Requirements
 ------------
@@ -31,10 +29,11 @@ Example Playbook
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
 ---
+
  - hosts: all
    become: false
    roles:
-     - hf_system_create_user_key
+     - { role: roles/hf/system/user_key/add }
 
 License
 -------

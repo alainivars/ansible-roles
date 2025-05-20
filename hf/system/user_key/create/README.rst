@@ -3,10 +3,11 @@
     :target: http://travis-ci.org/alainivars/ansible-role
     :alt: Build status
 
-hf_authorized_keys
-==================
+hf.system.user_key.add
+======================
 
-Set authorized key for user 'user' copying it from current user.
+Get existing users
+Create new user with no password with OpenSSH keypair (4096 bits, RSA)
 
 Requirements
 ------------
@@ -16,7 +17,7 @@ None.
 Role Variables
 --------------
 
-None.
+NEW_USER_NAME_LINUX: new user name to be created on the target.
 
 Dependencies
 ------------
@@ -29,10 +30,11 @@ Example Playbook
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
 ---
+
  - hosts: all
    become: false
    roles:
-     - hf_authorized_keys
+     - { role: roles/hf/system/user_key/create }
 
 License
 -------
@@ -42,5 +44,4 @@ BSD, MIT
 Author Information
 ------------------
 
-This role was created in 2019 by [Alain Ivars](https://www.linkedin.com/in/ivarsalain/)
-It is originally a fork of [Oefenweb/ansible-adminer](https://github.com/alainivars/ansible-roles/hf/authorized_keys).
+This role was created in 2025 by [Alain Ivars](https://www.linkedin.com/in/ivarsalain/)

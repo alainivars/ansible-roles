@@ -12,12 +12,6 @@
     ssh_key_bits: 4096
   with_items:
     - "{{ new_user_name_linux }}"
-  when: item not in getent_passwd.keys()
+  when: item in getent_passwd.keys()
 
-# TODO: check/compare with hf_authorized_keys to possibly merge
-- name: Set authorized my key if not exists
-  ansible.posix.authorized_key:
-    user: "{{ new_user_name_linux }}"
-    state: present
-    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
-    exclusive: true
+# TODO: write the key in .ssh

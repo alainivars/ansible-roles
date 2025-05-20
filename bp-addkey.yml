@@ -3,4 +3,4 @@
  - hosts: all
    become: false
    roles:
-     - hf_authorized_keys
+     - { role: roles/hf/system/authorized_keys }

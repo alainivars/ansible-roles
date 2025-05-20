@@ -1,0 +1,15 @@
+---
+# tasks file for hf_authorized_keys
+#- name: Set authorized key for user 'user' copying it from current user
+#  authorized_key:
+#    user: "{{ item.user }}"
+#    key: "{{ item.key }}"
+#    state: "{{ item.state }}"
+#  loop: "{{ ssh_users|flatten(levels=1) }}"
+
+- name: Add key if not exists in authorized_key
+  ansible.posix.authorized_key:
+    user: "{{ new_user_name_linux }}"
+    state: present
+    key: "{{ lookup('file', new_user_key_public) }}"
+    exclusive: true
