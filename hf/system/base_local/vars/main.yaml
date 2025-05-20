@@ -1,0 +1,4 @@
+---
+
+ansible_root: "{{ lookup('env', 'ANSIBLE_ROOT') | default('/etc/ansible') }}"
+playbook_dir: "{{ lookup('env', 'PLAYBOOK_DIR') | default('/home/a/repositories/system/devops/utils2devops/ansible') }}"

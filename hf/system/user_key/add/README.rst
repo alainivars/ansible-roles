@@ -6,7 +6,7 @@
 hf.system.user_key.create
 =========================
 
-Add my key if not exists in authorized_key
+Add my key if not exists in authorized_keys
 
 Requirements
 ------------

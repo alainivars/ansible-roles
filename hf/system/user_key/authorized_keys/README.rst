@@ -6,7 +6,7 @@
 hf_authorized_keys
 ==================
 
-Add key if not exists in authorized_key
+Add a key if not exists in authorized_keys
 
 Requirements
 ------------

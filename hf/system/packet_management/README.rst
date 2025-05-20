@@ -3,8 +3,8 @@
     :target: http://travis-ci.org/alainivars/ansible-role
     :alt: Build status
 
-hf_provision_system
-===================
+hf/system/packet_management
+===========================
 
 Provision system by:
 
@@ -35,10 +35,12 @@ Example Playbook
 Including an example of how to use your role:
 
 ---
- - hosts: all
-   become: false
-   roles:
-     - hf_provision_system
+
+- name: Proxmox community
+  hosts: all
+  become: true
+  roles:
+     - { role: roles/hf/system/packet_management }
 
 License
 -------

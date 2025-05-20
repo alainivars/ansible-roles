@@ -1,0 +1,5 @@
+---
+
+- name: Install Ansible Galaxy roles
+  local_action: command ansible-galaxy install -r {{ playbook_dir }}/requirements.yml -p {{ ansible_root }}/roles
+  delegate_to: localhost
