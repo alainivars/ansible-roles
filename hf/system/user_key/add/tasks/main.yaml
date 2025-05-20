@@ -1,0 +1,10 @@
+---
+# tasks file for hf_system_create_user_key
+
+# TODO: check/compare with authorized_keys to possibly merge
+- name: Add my key if not exists in authorized_key
+  ansible.posix.authorized_key:
+    user: "{{ new_user_name_linux }}"
+    state: present
+    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    exclusive: true
